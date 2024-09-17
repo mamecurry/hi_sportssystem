@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('facilities', function (Blueprint $table) {
             $table->id('facility_id');
             $table->string('facility_name');
-            $table->string('address');
+            $table->string('address')->nullable()->change();
             $table->string('available_hours');
             $table->boolean('reservation_flag')->nullable();
         });

@@ -12,9 +12,23 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('reservations', function (Blueprint $table) {
-            $table->id('Reservation_ID');
-            $table->timestamps();
-        });
+    // 主キー (UUID)
+    $table->uuid('reservation_id')->primary();
+
+    // 外部キー (facility_id, user_id)
+    $table->foreignId('facility_id')->constrained();
+    $table->foreignId('user_id')->constrained();
+
+    // 日時関連のカラム
+    $table->dateTime('reservation_datetime');
+    $table->dateTime('start_datetime');
+    $table->dateTime('end_datetime');
+
+    // ENUM相当のステータス
+    $table->enum('reservation_status', ['予約済み', 'キャンセル済み', '利用済み']);
+
+});
+
     }
 
     /**
