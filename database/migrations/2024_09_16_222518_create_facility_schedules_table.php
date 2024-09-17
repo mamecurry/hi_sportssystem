@@ -16,7 +16,7 @@ return new class extends Migration
     $table->id('schedule_id'); // 自動で主キーとAUTO_INCREMENTになる
 
     // 外部キー (facility_id)
-    $table->foreignId('facility_id')->constrained();
+    $table->foreignId('facility_id')->nullable()->constrained();
 
     // 日付関連のカラム
     $table->date('usage_date');

@@ -17,8 +17,8 @@ return new class extends Migration
     // 自動で主キーとAUTO_INCREMENTになる
 
     // 外部キー (user_id, facility_id)
-    $table->foreignId('user_id') ->constrained();
-    $table->foreignId('facility_id') ->constrained();
+    $table->foreignId('user_id')->nullable()->constrained();
+    $table->foreignId('facility_id')->nullable()->constrained();
 
     // ENUM相当のカラム
     $table->enum('application_content', ['施設登録', 'キャンセル']);

@@ -16,8 +16,8 @@ return new class extends Migration
     $table->uuid('reservation_id')->primary();
 
     // 外部キー (facility_id, user_id)
-    $table->foreignId('facility_id')->constrained();
-    $table->foreignId('user_id')->constrained();
+    $table->foreignId('facility_id')->nullable()->constrained();
+    $table->foreignId('user_id')->nullable()->constrained();
 
     // 日時関連のカラム
     $table->dateTime('reservation_datetime');
