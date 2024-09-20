@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReservationController;
+use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\Diff\Output\DiffOnlyOutputBuilder;
@@ -36,3 +37,6 @@ require __DIR__ . '/auth.php';
 Route::resource('reservations', ReservationController::class);
 Route::resource('users', UserController::class)
     ->only(['index', 'edit', 'update']);
+
+Route::resource('facilities', FacilityController::class)
+    ->only(['index']);
