@@ -13,7 +13,7 @@
                 @auth
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                         <x-nav-link :href="route('reservations.create')" :active="request()->routeIs('reservations.create')">
-                            {{ __('空き状況の確認') }}
+                            {{ __('施設予約') }}
                         </x-nav-link>
                     </div>
                     <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
@@ -84,7 +84,7 @@
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('reservations.create')" :active="request()->routeIs('reservations.create')">
-                {{ __('空き状況確認') }}
+                {{ __('施設予約') }}
             </x-responsive-nav-link>
             <x-responsive-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
                 {{ __('ユーザー一覧') }}
