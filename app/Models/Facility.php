@@ -10,5 +10,5 @@ class Facility extends Model
     use HasFactory;
     protected $table = 'facilities'; // テーブル名を明示的に指定
 
-    protected $fillable = ['facility_name']; // マスアサイン可能なフィールド
+    protected $fillable = ['facility_name', 'address', 'available_hours', 'reservation_flag']; // マスアサイン可能なフィールド
 }

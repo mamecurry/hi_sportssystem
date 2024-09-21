@@ -40,3 +40,10 @@ Route::resource('users', UserController::class)
 
 Route::resource('facilities', FacilityController::class)
     ->only(['index']);
+
+Route::get('/reservations/confirm', [ReservationController::class, 'confirm'])
+    ->name('reservations.confirm');
+
+// 予約保存用のルート（POST）
+Route::post('/reservations', [ReservationController::class, 'store'])
+->name('reservations.store');
