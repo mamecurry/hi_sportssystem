@@ -40,3 +40,14 @@ Route::resource('users', UserController::class)
 
 Route::resource('facilities', FacilityController::class)
     ->only(['index']);
+
+Route::get('/reservations/create/timeselect', [ReservationController::class, 'timeselect'])
+    ->name('reservations.timeselect');
+
+// 予約保存用のルート（POST）
+Route::post('/reservations', [ReservationController::class, 'store'])
+    ->name('reservations.store');
+
+// 予約完了画面へのルートを設定
+Route::get('/reservations/complete', [ReservationController::class, 'complete'])
+    ->name('reservations.complete');
