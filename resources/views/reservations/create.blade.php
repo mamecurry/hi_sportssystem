@@ -1,6 +1,6 @@
 <x-app-layout>
     @slot('header')
-        {{ _('予約登録') }}
+        {{ _('施設選択と日付入力') }}
     @endslot
 
     <div class="max-w-4xl mx-auto py-10 lg:px-8">
