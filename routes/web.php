@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ReservationController;
 use App\Http\Controllers\FacilityController;
 use App\Http\Controllers\UserController;
+use App\Models\Reservation;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\Diff\Output\DiffOnlyOutputBuilder;
 
@@ -18,13 +19,7 @@ use SebastianBergmann\Diff\Output\DiffOnlyOutputBuilder;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::get('/', [ReservationController::class, 'initial'])->name('reservations.initial');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -34,12 +29,14 @@ Route::middleware('auth')->group(function () {
 
 require __DIR__ . '/auth.php';
 
-Route::resource('reservations', ReservationController::class);
-Route::resource('users', UserController::class)
-    ->only(['index', 'edit', 'update']);
+// 一般ユーザー
+Route::resource('reservations', ReservationController::class)
+    ->middleware(['auth']);
 
-Route::resource('facilities', FacilityController::class)
-    ->only(['index']);
+// 管理者
+Route::resource('users', UserController::class)
+    ->only(['index', 'edit', 'update'])
+    ->middleware('auth');
 
 Route::get('/reservations/create/timeselect', [ReservationController::class, 'timeselect'])
     ->name('reservations.timeselect');

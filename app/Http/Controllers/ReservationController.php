@@ -18,9 +18,16 @@ class ReservationController extends Controller
         //
     }
 
+    public function initial()
+    {
+        // 初期画面表示し、ログインかユーザー登録を行う
+        return view('reservations.initial');
+    }
+
     /**
      * Show the form for creating a new resource.
      */
+
     public function create()
     {
         $facilities = Facility::all();
@@ -34,7 +41,7 @@ class ReservationController extends Controller
 
         // 選択された施設と予約可能な時間を取得
         $facility = Facility::find($request->facility_id);
-    
+
         $reservation_datetime = $request->input('reservation_datetime');
 
         // 予約可能な時間帯を設定（ここでは仮に10:00～20:00の1時間ごとの時間帯を作成）
