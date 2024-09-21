@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Facilities;
+use App\Models\Facility;
 use App\Models\Reservation;
+use Database\Seeders\FacilitySeeder;
 use Illuminate\Http\Request;
 
 class ReservationController extends Controller
@@ -18,7 +21,12 @@ class ReservationController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create() {}
+    public function create()
+    {
+        $facilities = Facility::all();
+        // 必要なデータを取得し、予約作成画面を返す
+        return view('reservations.create', compact('facilities'));
+    }
 
     /**
      * Store a newly created resource in storage.
