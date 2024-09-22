@@ -4,9 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Models\Facilities;
 use App\Models\Facility;
+use App\Models\Report;
 use App\Models\Reservation;
+use App\Models\ReservationStatusHistory;
 use Database\Seeders\FacilitySeeder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class ReservationController extends Controller
 {
@@ -35,31 +39,10 @@ class ReservationController extends Controller
         return view('reservations.create', compact('facilities'));
     }
     // 予約内容確認画面
-    public function timeselect(Request $request)
+    public function complete()
     {
-        $facility_id = $request->input('facility_id');
-
-        // 選択された施設と予約可能な時間を取得
-        $facility = Facility::find($request->facility_id);
-
-        $reservation_datetime = $request->input('reservation_datetime');
-
-        // 予約可能な時間帯を設定（ここでは仮に10:00～20:00の1時間ごとの時間帯を作成）
-        $availableTimes = [
-            '10:00~11:00',
-            '11:00~12:00',
-            '12:00~13:00',
-            '13:00~14:00',
-            '14:00~15:00',
-            '15:00~16:00',
-            '16:00~17:00',
-            '17:00~18:00',
-            '18:00~19:00',
-
-        ];
-
-        // timeselect.blade.phpに施設名と時間帯を渡す
-        return view('reservations.timeselect', compact('facility', 'reservation_datetime'));
+        // 予約完了ページを表示
+        return view('reservations.complete');
     }
 
     /**
@@ -67,19 +50,40 @@ class ReservationController extends Controller
      */
     public function store(Request $request)
     {
-        return redirect()->route('reservations.timeselect')->with('success', '予約が完了しました！');
-        // バリデーション
+
+
+        // バリデーション（施設IDと予約日時のみを検証）
         $validated = $request->validate([
-            'facility_id' => 'required|exists:facilities,id',
-            'time_slots' => 'required|array'
+            'facility_id' => 'required|exists:facilities,id',  // 施設IDが存在するか確認
+            'reservation_datetime' => 'required|date',  // 正しい日付フォーマットか確認
         ]);
-        // データベースに予約情報を保存
-        Reservation::create([
-            'facility_id' => $validated['facility_id'],
-            'reservation_datetime' => $validated['reservation_datetime']
-        ]);
-        // 完了画面へリダイレクト
-        return redirect()->route('reservations.complete');
+        
+ // トランザクションを使ってデータ保存
+        DB::beginTransaction();
+        try {
+            // 予約を保存
+            $reservation = new Reservation();
+            $reservation->facility_id = $validated['facility_id'];
+            $reservation->reservation_datetime = $validated['reservation_datetime'];
+            $reservation->user_id = auth()->id();  // ログインしているユーザーIDを取得
+            $reservation->save();  // 予約データを保存
+
+            // ReservationStatusHistoryに保存する必要がある場合
+           // $history = new ReservationStatusHistory();
+            //$history->reservation_id = $reservation->id;  // 保存された予約のIDを保存
+            //$history->user_id = auth()->id();  // ログインしているユーザーのIDを保存
+            //$history->status = '予約完了';  // ステータスを設定
+            //$history->save();  // 履歴データを保存
+
+            DB::commit();  // トランザクションの確定
+        } catch (\Exception $e) {
+            DB::rollback();  // エラー時にトランザクションをロールバック
+            return back()->withInput()->withErrors($e->getMessage());
+        
+        }
+
+        // 予約完了ページへリダイレクト
+        return redirect()->route('reservations.complete')->with('success', '予約が完了しました！');
     }
 
     /**
@@ -112,10 +116,6 @@ class ReservationController extends Controller
     public function destroy(string $id)
     {
         //
-    }
-    // 予約完了画面を表示す
-    public function complete()
-    {
-        return view('reservations.complete');
+
     }
 }
