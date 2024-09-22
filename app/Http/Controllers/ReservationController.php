@@ -54,12 +54,10 @@ class ReservationController extends Controller
 
 
         // バリデーション（施設IDと予約日時のみを検証）
-        // $validated = $request->validate([
-        //     'facility_id' => 'required|exists:facilities,id',  // 施設IDが存在するか確認
-        //     'reservation_datetime' => 'required|date',  // 正しい日付フォーマットか確認
-        //     'time_slots' => 'required|array|min:1', // 少なくとも1つは選択されているかチェック
-        //     'time_slots.*' => 'in:9:00~10:00,10:00~11:00,11:00~12:00,12:00~13:00,13:00~14:00,14:00~15:00,15:00~16:00,17:00~18:00,18:00~19:00,19:00~20:00,20:00~21:00',
-        // ]);
+        $validated = $request->validate([
+            'facility_id' => 'required|exists:facilities,id',  // 施設IDが存在するか確認
+            'reservation_datetime' => 'required|date',  // 正しい日付フォーマットか確認
+        ]);
 
         // トランザクションを使ってデータ保存
         DB::beginTransaction();
@@ -72,10 +70,11 @@ class ReservationController extends Controller
             // // dd($validated['time_slots']);
             // $reservation->time_slot = $validated['time_slot'];
             // $reservation->save();  // 予約データを保存
-
+dd($request);
             $reservation = new Reservation();
-            $reservation->facility_id = $request->facility_id;
-            $reservation->reservation_datetime = $request->reservation_datetime;
+            $reservation->facility_id = $validated['facility_id'];
+            $reservation->reservation_datetime = $validated['reservation_datetime'];
+            $reservation->reservation_time = ''; // [未実装]予約時間を保存
             $reservation->user_id = auth()->id();  // ログインしているユーザーIDを取得
             // dd($validated['time_slots']);
             $reservation->time_slot = $request->time_slot;
