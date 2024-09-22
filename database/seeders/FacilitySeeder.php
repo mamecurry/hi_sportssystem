@@ -22,7 +22,7 @@ class FacilitySeeder extends Seeder
             ],
             [
 
-                'name' => '町営テニスコート害',
+                'name' => '町営テニスコート',
                 'address' => '長島町2-2',
                 'available_hours' => '09:00-17:00'
             ],

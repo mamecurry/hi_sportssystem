@@ -57,19 +57,20 @@ class ReservationController extends Controller
             'facility_id' => 'required|exists:facilities,id',  // 施設IDが存在するか確認
             'reservation_datetime' => 'required|date',  // 正しい日付フォーマットか確認
         ]);
-        
- // トランザクションを使ってデータ保存
+
+        // トランザクションを使ってデータ保存
         DB::beginTransaction();
         try {
             // 予約を保存
             $reservation = new Reservation();
             $reservation->facility_id = $validated['facility_id'];
             $reservation->reservation_datetime = $validated['reservation_datetime'];
+            $reservation->reservation_time = ''; // [未実装]予約時間を保存
             $reservation->user_id = auth()->id();  // ログインしているユーザーIDを取得
             $reservation->save();  // 予約データを保存
 
             // ReservationStatusHistoryに保存する必要がある場合
-           // $history = new ReservationStatusHistory();
+            // $history = new ReservationStatusHistory();
             //$history->reservation_id = $reservation->id;  // 保存された予約のIDを保存
             //$history->user_id = auth()->id();  // ログインしているユーザーのIDを保存
             //$history->status = '予約完了';  // ステータスを設定
@@ -79,7 +80,6 @@ class ReservationController extends Controller
         } catch (\Exception $e) {
             DB::rollback();  // エラー時にトランザクションをロールバック
             return back()->withInput()->withErrors($e->getMessage());
-        
         }
 
         // 予約完了ページへリダイレクト
