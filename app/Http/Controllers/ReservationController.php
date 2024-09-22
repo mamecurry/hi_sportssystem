@@ -70,7 +70,7 @@ class ReservationController extends Controller
             // // dd($validated['time_slots']);
             // $reservation->time_slot = $validated['time_slot'];
             // $reservation->save();  // 予約データを保存
-dd($request);
+
             $reservation = new Reservation();
             $reservation->facility_id = $validated['facility_id'];
             $reservation->reservation_datetime = $validated['reservation_datetime'];
