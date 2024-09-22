@@ -6,18 +6,18 @@
     <div class="max-w-4xl mx-auto py-10 lg:px-8">
         <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg p-6">
 
-    @if ($errors->any())
-        <div class="error">
-            <p>
-                <b>{{ count($errors) }}件のエラーがあります。</b>
-            </p>
-            <ul>
-                @foreach ($errors->all() as $error)
-                    <li>{{ $error }}</li>
-                @endforeach
-            </ul>
-        </div>
-    @endif
+            @if ($errors->any())
+                <div class="error">
+                    <p>
+                        <b>{{ count($errors) }}件のエラーがあります。</b>
+                    </p>
+                    <ul>
+                        @foreach ($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
 
             <form action="{{ route('reservations.store') }}" method="POST">
                 @csrf
