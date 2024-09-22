@@ -40,7 +40,7 @@ Route::resource('reservations', ReservationController::class)
 // 管理者
 Route::resource('users', UserController::class)
     ->only(['index', 'edit', 'update'])
-    ->middleware('auth');
+    ->middleware(['auth', 'can:admin']);
 
 Route::get('/reservations/create/timeselect', [ReservationController::class, 'timeselect'])
     ->name('reservations.timeselect');

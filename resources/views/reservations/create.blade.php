@@ -15,7 +15,7 @@
                             <label>
                                 <input type="radio" name="facility_id" value="{{ $facility->id }}">
                                 {{ $facility->facility_name }}<!-- facility_name を正しく表示 -->
-                                </label>
+                            </label>
                         @endforeach
                     </div>
                 </div>
